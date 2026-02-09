@@ -1,34 +1,34 @@
 {
   "manifest_version": 3,
-  "name": "BOJ Submit Test",
-  "version": "1.3",
-  "description": "백준 코드 제출 및 결과 확인 테스트",
-  "permissions": [
-    "activeTab",
-    "scripting",
-    "tabs",
-    "clipboardWrite",
-    "clipboardRead",
-    "storage"
-  ],
+  "name": "UJAX Problem Collector",
+  "version": "1.0.0",
+  "description": "백준 문제 페이지 방문 시 자동으로 문제 데이터를 수집합니다",
+  "permissions": ["storage", "tabs"],
   "host_permissions": [
     "https://www.acmicpc.net/*",
-    "http://localhost:3000/*"
+    "https://solved.ac/*",
+    "http://localhost:8080/*"
   ],
-  "action": {
-    "default_popup": "popup.html"
-  },
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "scripts/background.js"
   },
   "content_scripts": [
     {
+      "matches": ["https://www.acmicpc.net/problem/*"],
+      "js": ["scripts/content.js"],
+      "run_at": "document_end"
+    },
+    {
       "matches": [
-        "https://www.acmicpc.net/submit/*",
-        "https://www.acmicpc.net/status*"
+        "https://www.acmicpc.net/status",
+        "https://www.acmicpc.net/status?*"
       ],
-      "js": ["content.js"],
-      "run_at": "document_idle"
+      "js": ["scripts/statusContent.js"],
+      "run_at": "document_end"
     }
-  ]
+  ],
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_title": "UJAX Problem Collector"
+  }
 }
